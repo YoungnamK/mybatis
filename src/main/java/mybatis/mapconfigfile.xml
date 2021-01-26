@@ -7,6 +7,7 @@
 <configuration>
 	<typeAliases>
 		<typeAlias alias="MyMember" type="bean.Member"/>
+		<typeAlias alias="MyBoard" type="bean.Board"/>
 	</typeAliases>
 	
 	<environments default="development">
@@ -23,5 +24,6 @@
 	
 	<mappers>
 		<mapper resource="mapper/mapmember.xml"/>
+		<mapper resource="mapper/mapboard.xml"/>
 	</mappers>
 </configuration>

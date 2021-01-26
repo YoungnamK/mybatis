@@ -1,6 +1,8 @@
 package dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import bean.Member;
 
@@ -37,5 +39,26 @@ public class MemberDao extends SuperDao {
 		super.SessionClose();
 		return member;
 	}
+	public List<Member> GetJoinlist() {
+		List<Member> lists=null;
+		lists= super.sqlSession.selectList(namespace+"GetJoinList");
+		super.SessionClose();
+		return lists;
+	}
+	public List<HashMap<String, Object>> JoinGet3Way() {
+		List<HashMap<String, Object>> maplists = null;
+		maplists = super.sqlSession.selectList(namespace+"JoinGet3Way");
+		super.SessionClose();
+		return maplists;
+	}
+	public List<Member> IfCondition(String name) {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("name", name);
+		List<Member> lists = null;
+		lists = super.sqlSession.selectList(namespace+"IfCondition", map);
+		super.SessionClose();
+		return lists;
+	}
+	
 
 }

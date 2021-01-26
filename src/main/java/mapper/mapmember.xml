@@ -27,8 +27,49 @@
 		<include refid="myselect"/>
 		order by name asc
 	</select>
-	<select id="GetMemberByPk" resultType="MyMember" parameterMap="String">
+	<select id="GetMemberByPk" resultType="MyMember" parameterType="String">
 		<include refid="myselect"/>
 			where id=#{id}
 	</select>
+	
+	<resultMap type="MyMember" id="MemberBoardCollection">
+		<id column="id" property="id"/>
+		<!-- pk만 id속성  -->
+		<!--column은 db관점 property는 class관점  -->
+		<result column="name" property="name"/>
+		<result column="age" property="age"/>
+		<result column="gender" property="gender"/>
+		<collection property="boardBeans" ofType="MyBoard">
+		<!-- List<board> boardBeans 와 대응 -->
+			<id column="no" property="no"/>
+			<result column="title" property="title"/>
+			<result column="writer" property="writer"/>
+			<result column="content" property="content"/>
+			<result column="regdate" property="regdate"/>
+			<result column="hitcount" property="hitcount"/>
+		</collection>
+	</resultMap>
+	
+	<select id="GetJoinList" resultMap="MemberBoardCollection">
+		select * from members m inner join boards mb on m.id = mb.writer
+	</select>
+	
+	
+	<select id="JoinGet3Way" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select m.name, p.pname, p.price, o.qty, p.price*o.qty as amount from 
+		(members m inner join orders o on m.id= o.mid) inner join products p on o.pno = p.pno
+	
+	</select>
+	
+	<select id="IfCondition" parameterType="java.util.HashMap" resultType="MyMember">
+		<include refid="myselect"/>
+		<if test="name!= null">
+		where name = #{name}
+		</if>
+	</select>
+	
+	
+	
+	
+	
 </mapper>

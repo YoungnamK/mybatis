@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="NsBoard">
+	<select id="SelectTopN" resultType="MyBoard" parameterType="java.util.HashMap">
+		select * from boards order by no desc
+	</select>
+
+
+	<insert id="InsertData" parameterType="MyBoard">
+		insert into boards (no, title, writer, content, regdate, hitcount) 
+		values (#{no}, #{title}, #{writer}, #{content}, #{regdate}, #{hitcount})
+	</insert>
+	
+	<update id="UpdateData" parameterType="MyBoard">
+		update boards set no=#{no}, title=#{title}, writer=#{writer}, content=#{content}, regdate=#{regdate}, hitcount=#{hitcount}
+		where no=#{no}
+	</update>
+	
+	<delete id="DeleteData" parameterType="Integer">
+		delete from boards where no = #{no}
+	</delete>
+	
+	<select id="SelectAll" resultType="MyBoard">
+		select * from boards
+	</select>
+	
+	<select id="SelectOne" resultType="MyBoard" parameterType="Integer">
+		select * from boards where no = #{no}
+	</select>
+	
+	<select id="JoinTest" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+		select m.id, m.name, b.title, b.content from members m inner join boards b on m.id = b.writer
+	</select>
+	
+	
+	<select id="IfJoin" resultType="java.util.HashMap" parameterType="MyBoard">
+		select m.id, m.name, b.title, b.content from members m inner join boards b on m.id = b.writer
+		<if test="name != null">
+			where name = #{name}
+		</if>
+	</select>
+	
+	<select id="IfCondition" resultType="MyBoard" parameterType="java.util.HashMap">
+		select * from boards 
+		<if test="id != null ">
+			where writer = #{id}
+		</if>
+	</select>
+</mapper>
