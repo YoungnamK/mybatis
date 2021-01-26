@@ -26,7 +26,7 @@ public class B08_MainIfCondition {
 			String imsi=bo.getNo()+"\t"+bo.getTitle()+"\t"+bo.getWriter()+"\t"+bo.getContent()+"\t"+bo.getRegdate()+"\t"+bo.getHitcount();
 			System.out.println(imsi);	
 		}
-
+		sc.close();
 	}
 
 }

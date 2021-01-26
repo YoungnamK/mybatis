@@ -32,6 +32,7 @@ public class B07_MainIfJoin {
 			String imsi = id+"\t"+_name+"\t"+title+"\t"+content;
 			System.out.println(imsi);
 		}
+		sc.close();
 	}
 
 }
