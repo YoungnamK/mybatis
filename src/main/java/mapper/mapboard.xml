@@ -48,4 +48,17 @@
 			where writer = #{id}
 		</if>
 	</select>
+	
+	
+	<select id="TrimIf1" resultType="MyBoard" parameterType="java.util.HashMap">
+		select * from boards
+		<trim prefix="where" prefixOverrides="and|or">
+		<if test="writer != null">
+			and writer = #{writer}
+		</if>
+		<if test="hitcount !=null">
+			and hitcount >= #{hitcount}
+		</if>
+		</trim>
+	</select>
 </mapper>

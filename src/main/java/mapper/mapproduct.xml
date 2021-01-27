@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 매퍼파일 : sql 구문을 정의하고 있는 파일 -->
+<mapper namespace="NsProduct">
+
+	<select id="Choose" parameterType="java.util.HashMap" resultType="MyProduct">
+		select pno, pname, stock,
+		<choose>
+			<when test="somevalue=='DOUBLE'">
+				2.0*price as price
+			</when>
+			<when test="somevalue=='HALF'">
+				0.5*price as price
+			</when>
+			<otherwise>
+				0.3*price as price 
+			</otherwise>
+		</choose>
+		from products
+	</select>
+	
+	<select id="Foreach1" resultType="MyProduct">
+		select * from products where pname in
+		<foreach collection="array" item="item" index="index" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+	
+	<select id="Foreach2" resultType="MyProduct">
+		select * from products where pname in
+		<foreach collection="list" item="proname" index="index" open="(" separator="," close=")">
+			#{proname}
+		</foreach>
+	</select>
+
+</mapper>

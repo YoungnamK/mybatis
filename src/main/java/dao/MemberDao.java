@@ -1,5 +1,6 @@
 package dao;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,6 +57,37 @@ public class MemberDao extends SuperDao {
 		map.put("name", name);
 		List<Member> lists = null;
 		lists = super.sqlSession.selectList(namespace+"IfCondition", map);
+		super.SessionClose();
+		return lists;
+	}
+	public List<Member> ForEach1() {
+		String[]item= {"홍길동","김철수","심형래"};
+		List<Member> lists = null;
+		lists=super.sqlSession.selectList(namespace+"ForEach1",item);
+		super.SessionClose();
+		return lists;
+	}
+	public List<Member> ForEach2() {
+		List<String>somelists = new ArrayList<String>();
+		somelists.add("홍길동");
+		somelists.add("김철수");
+		somelists.add("심형래");
+		List<Member> lists = null;
+		lists=super.sqlSession.selectList(namespace+"ForEach2",somelists);
+		super.SessionClose();
+		return lists;
+	}
+	public List<Member> TrimIf1(Map<String, Object> map) {
+		List<Member> lists = null;
+		lists = super.sqlSession.selectList(namespace+"TrimIf1", map);
+		super.SessionClose();
+		return lists;
+	}
+	
+	
+	public List<HashMap<String, Object>> CastStatement() {
+		List<HashMap<String, Object>> lists = null;
+		lists = super.sqlSession.selectList(namespace + "CastStatement");
 		super.SessionClose();
 		return lists;
 	}

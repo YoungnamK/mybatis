@@ -2,6 +2,7 @@ package dao;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 
@@ -72,6 +73,13 @@ public class BoardDao extends SuperDao{
 	public List<Board> IfCondition(String id) {
 		List<Board> lists = null;
 		lists = super.sqlSession.selectList(namespace+"IfCondition",id);
+		super.SessionClose();
+		return lists;
+	}
+
+	public List<Board> TrimIf1(Map<String, Object> map) {
+		List<Board> lists = null;
+		lists = super.sqlSession.selectList(namespace+"TrimIf1", map);
 		super.SessionClose();
 		return lists;
 	}

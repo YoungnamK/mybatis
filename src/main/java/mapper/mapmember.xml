@@ -6,9 +6,10 @@
 <!-- 매퍼파일 : sql 구문을 정의하고 있는 파일 -->
 <mapper namespace="NsMember">
 	<insert id="InsertData" parameterType="MyMember">
-		<!--parameterType은 메소드의 매개변수와 같음(넣어주는 값)  -->
-		insert into members(id, name, age, gender) 
-		values (#{id}, #{name}, #{age}, #{gender}) 
+		<!--parameterType은 메소드의 매개변수와 같음(넣어주는 값) -->
+		insert into members(id, name, age, gender)
+		values (#{id}, #{name},
+		#{age}, #{gender})
 	</insert>
 	<update id="UpdateData" parameterType="MyMember">
 		update members set
@@ -16,60 +17,108 @@
 		where id=#{id}
 	</update>
 	<delete id="DeleteData" parameterType="String">
-		delete from members 
-		where id=#{id}
+		delete from members
+		where
+		id=#{id}
 	</delete>
-	
+
 	<sql id="myselect">
 		select * from members
 	</sql>
 	<select id="GetMemberList" resultType="MyMember">
-		<include refid="myselect"/>
+		<include refid="myselect" />
 		order by name asc
 	</select>
-	<select id="GetMemberByPk" resultType="MyMember" parameterType="String">
-		<include refid="myselect"/>
-			where id=#{id}
+	<select id="GetMemberByPk" resultType="MyMember"
+		parameterType="String">
+		<include refid="myselect" />
+		where id=#{id}
 	</select>
-	
+
 	<resultMap type="MyMember" id="MemberBoardCollection">
-		<id column="id" property="id"/>
-		<!-- pk만 id속성  -->
-		<!--column은 db관점 property는 class관점  -->
-		<result column="name" property="name"/>
-		<result column="age" property="age"/>
-		<result column="gender" property="gender"/>
+		<id column="id" property="id" />
+		<!-- pk만 id속성 -->
+		<!--column은 db관점 property는 class관점 -->
+		<result column="name" property="name" />
+		<result column="age" property="age" />
+		<result column="gender" property="gender" />
 		<collection property="boardBeans" ofType="MyBoard">
-		<!-- List<board> boardBeans 와 대응 -->
-			<id column="no" property="no"/>
-			<result column="title" property="title"/>
-			<result column="writer" property="writer"/>
-			<result column="content" property="content"/>
-			<result column="regdate" property="regdate"/>
-			<result column="hitcount" property="hitcount"/>
+			<!-- List<board> boardBeans 와 대응 -->
+			<id column="no" property="no" />
+			<result column="title" property="title" />
+			<result column="writer" property="writer" />
+			<result column="content" property="content" />
+			<result column="regdate" property="regdate" />
+			<result column="hitcount" property="hitcount" />
 		</collection>
 	</resultMap>
-	
+
 	<select id="GetJoinList" resultMap="MemberBoardCollection">
-		select * from members m inner join boards mb on m.id = mb.writer
+		select * from members m inner
+		join boards mb on m.id = mb.writer
 	</select>
-	
-	
-	<select id="JoinGet3Way" parameterType="java.util.HashMap" resultType="java.util.HashMap">
-		select m.name, p.pname, p.price, o.qty, p.price*o.qty as amount from 
-		(members m inner join orders o on m.id= o.mid) inner join products p on o.pno = p.pno
-	
+
+
+	<select id="JoinGet3Way" parameterType="java.util.HashMap"
+		resultType="java.util.HashMap">
+		select m.name, p.pname, p.price, o.qty, p.price*o.qty as
+		amount from
+		(members m inner join orders o on m.id= o.mid) inner join
+		products p on o.pno
+		= p.pno
+
 	</select>
-	
-	<select id="IfCondition" parameterType="java.util.HashMap" resultType="MyMember">
-		<include refid="myselect"/>
+
+	<select id="IfCondition" parameterType="java.util.HashMap"
+		resultType="MyMember">
+		<include refid="myselect" />
 		<if test="name!= null">
-		where name = #{name}
+			where name = #{name}
 		</if>
 	</select>
-	
-	
-	
-	
-	
+
+	<select id="ForEach1" resultType="MyMember">
+		select * from members
+		where name in
+		<foreach item="item" index="index" collection="array" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+	<select id="ForEach2" resultType="MyMember">
+		select * from members
+		where name in
+		<foreach item="somelists" index="index" collection="list"
+			open="(" separator="," close=")">
+			#{somelists}
+		</foreach>
+	</select>
+
+	<select id="TrimIf1" parameterType="java.util.HashMap"
+		resultType="Mymember">
+		select * from members
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="gender!=null">
+				and gender=#{gender}
+			</if>
+
+			<if test="age!=null">
+				and age>=#{age}
+			</if>
+		</trim>
+
+	</select>
+	<select parameterType="java.util.HashMap" id="CastStatement" resultType="java.util.HashMap">
+		<![CDATA[
+		select id, name, age, gender,
+		case 
+		when age <= 30 then 'yb'
+		when age <= 50 then 'mb'
+		else 'ob' end
+    	as result
+		from members 
+		]]>
+	</select>
+
 </mapper>

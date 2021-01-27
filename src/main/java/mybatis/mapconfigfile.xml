@@ -8,6 +8,8 @@
 	<typeAliases>
 		<typeAlias alias="MyMember" type="bean.Member"/>
 		<typeAlias alias="MyBoard" type="bean.Board"/>
+		<typeAlias alias="MyProduct" type="bean.Product"/>
+		<typeAlias alias="MyAlbum" type="bean.Album"/>
 	</typeAliases>
 	
 	<environments default="development">
@@ -25,5 +27,7 @@
 	<mappers>
 		<mapper resource="mapper/mapmember.xml"/>
 		<mapper resource="mapper/mapboard.xml"/>
+		<mapper resource="mapper/mapproduct.xml"/>
+		<mapper resource="mapper/mapalbum.xml"/>
 	</mappers>
 </configuration>
